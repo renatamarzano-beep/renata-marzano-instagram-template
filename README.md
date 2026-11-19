@@ -12,7 +12,7 @@ Editor visual de carrosséis 4:5 (1080 × 1350), pronto para GitHub Pages. Ele f
 
 ## Como editar o carrossel
 
-Edite `src/main.jsx` para alterar os textos, a ordem, os títulos e as imagens de cada slide. As imagens ficam em `images/`; as fontes locais ficam em `fonts/`.
+Edite `main.jsx` para alterar os textos, a ordem, os títulos e as imagens de cada slide. As imagens e fontes do template ficam na raiz do repositório.
 
 O botão **Baixar carrossel** exporta todos os slides em PNG (1080 × 1350) dentro de um arquivo ZIP.
 
