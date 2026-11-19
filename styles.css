@@ -164,3 +164,61 @@ button:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
 .choice-photo{width:120px;height:120px;flex:none;background-position:center;background-size:cover}
 .choice-row p{font:400 34px/1.25 var(--support-font);color:#655543;margin:0 0 8px}
 .choice-row strong{font:400 52px/1.04 Advercase,serif;letter-spacing:-.015em;color:var(--coffee)}
+
+/* Editing controls stay outside the fixed-size artwork and exported PNGs. */
+.app-shell{display:block}
+.app-controls{display:grid;grid-template-columns:240px minmax(0,1fr);border:0;margin:0;padding:0;min-width:0;min-height:100vh}
+.workspace{padding:28px clamp(18px,3vw,48px)}
+.editing-area{display:grid;grid-template-columns:minmax(260px,1fr) minmax(260px,340px);gap:28px;align-items:start}
+.preview-column{min-width:0;position:sticky;top:24px}
+.canvas-area{gap:12px}
+.editor{background:var(--paper-light);border:1px solid #d2c5b1;padding:22px;border-radius:8px;min-width:0}
+.editor h3{font:400 25px Advercase,serif;margin:0 0 10px}
+.editor-note,.editor p,.save-status{font:13px/1.5 var(--support-font);color:#655543}
+.editor fieldset{border:0;padding:0;margin:0;min-width:0}
+.editor details{border-top:1px solid #ddd1c0;padding:14px 0}
+.editor summary{font-weight:600;cursor:pointer;margin-bottom:14px}
+.editor label{display:grid;gap:7px;font:13px/1.4 var(--support-font);margin:14px 0}
+.editor input:not([type=range]),.editor textarea,.editor select{font:16px/1.4 var(--support-font);width:100%;min-width:0;border:1px solid #bdaf9a;border-radius:4px;padding:10px;background:white;color:var(--coffee)}
+.editor textarea{resize:vertical}
+.editor input[type=range]{width:100%;accent-color:var(--green)}
+.editor-thumb{width:100%;height:140px;object-fit:contain;background:#e6dfd1;border-radius:4px}
+.editor button,.project-tools button,.project-upload{border:1px solid #ac9475;background:var(--paper);color:var(--coffee);padding:10px 12px;font:14px var(--support-font);border-radius:4px;cursor:pointer}
+.project-tools{display:flex;gap:10px;flex-wrap:wrap}
+.project-upload{position:relative;overflow:hidden;display:inline-flex;align-items:center}
+.project-upload input{position:absolute;inset:0;opacity:0;width:100%;cursor:pointer}
+.project-upload:focus-within{outline:2px solid var(--orange);outline-offset:3px}
+.choice-edit{border-top:1px solid #ddd1c0;padding-top:14px}
+.photo-fill{overflow:hidden}
+.photo-pixels{position:absolute;inset:0;background-image:inherit;background-size:inherit;background-position:inherit}
+.post .choice-photo{position:relative;width:120px;height:120px;flex:none}
+.choice-row>div:last-child{min-width:0;flex:1}
+.choice-row strong{display:block}
+.post .eyebrow{max-height:94px;overflow:hidden;min-width:0}
+.post figcaption{max-height:62px;overflow:hidden}
+.cover-postcard figcaption{max-height:66px}
+.cover-detail{max-height:108px;overflow:hidden}
+.photo-label{max-width:450px;max-height:60px;overflow:hidden}
+.story-caption{max-width:908px;max-height:60px;overflow:hidden}
+.dessert-detail{max-width:860px;max-height:50px;overflow:hidden}
+.collage-word{max-width:360px;max-height:90px;overflow:hidden}
+@media(max-width:1150px){
+ .app-controls{grid-template-columns:200px minmax(0,1fr)}
+ .panel{padding:24px 16px}
+ .editing-area{grid-template-columns:1fr}
+ .preview-column{position:static}
+ .editor{width:100%;max-width:600px;justify-self:center}
+ .preview{flex:0 1 460px}
+}
+@media(max-width:760px){
+ .app-controls{grid-template-columns:1fr}
+ .workspace{padding:22px 16px}
+ .editing-area{gap:24px;grid-template-columns:minmax(0,1fr)}
+ .editor{padding:18px}
+ .project-tools>*{flex:1;justify-content:center;text-align:center}
+}
+
+.post figcaption{max-height:72px}
+.collage-word{line-height:1.2;max-height:100px}
+
+.collage-word{padding-bottom:4px}

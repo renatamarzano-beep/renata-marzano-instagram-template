@@ -1,4 +1,4 @@
-const { useState, useRef, useLayoutEffect } = React;
+const { useState, useRef, useLayoutEffect, useEffect } = React;
 const { createRoot } = ReactDOM;
 
 // All composition measurements are in the 1080 × 1350 artwork coordinate space.
@@ -161,7 +161,9 @@ function Frame({ slide, index, total, onLayout }) {
     const heading = article.querySelector('h1');
     const block = article.querySelector('.post-content');
     const bottom = layout.top + block.offsetHeight;
-    const valid = heading.scrollWidth <= heading.clientWidth + 1 &&
+    const extras = [...article.querySelectorAll('.eyebrow, figcaption, .cover-detail, .photo-label, .story-caption, .dessert-detail, .collage-word, .choice-row p, .choice-row strong')];
+    const extraValid = extras.every(el => el.scrollWidth <= el.clientWidth + 1 && (el.matches(".choice-row strong") || el.scrollHeight <= el.clientHeight + 1));
+    const valid = slide.title.trim().length > 0 && extraValid && block.scrollWidth <= block.clientWidth + 1 && heading.scrollWidth <= heading.clientWidth + 1 &&
       bottom <= region.bottom + 1 &&
       [...heading.children].every(line => line.scrollWidth <= heading.clientWidth + 1);
     article.dataset.ready = valid ? 'true' : 'error';
@@ -170,8 +172,10 @@ function Frame({ slide, index, total, onLayout }) {
   }, [layout]);
 
   function Photo({ src, className, caption }) {
+    const photo=slide.photos?.[className.startsWith("choice-") ? className.split(" ")[0] : className] || {};
+    src=photo.src || src; caption=photo.caption ?? caption;
     return <figure className={className}>
-      <div className="photo-fill" data-image={src} style={{ backgroundImage:'url("' + src + '")' }}/>
+      <div className="photo-fill" data-image={src} style={{ backgroundImage:'url("' + src + '")', backgroundSize:photo.src ? 'cover' : undefined, backgroundPosition:photo.x!==undefined || photo.y!==undefined ? `${photo.x??50}% ${photo.y??50}%` : undefined }}><div className="photo-pixels" style={{transform:`scale(${photo.zoom || 1})`,transformOrigin:`${photo.x??50}% ${photo.y??50}%`}}/></div>
       {caption && <figcaption>{caption}</figcaption>}
     </figure>;
   }
@@ -214,9 +218,9 @@ function Frame({ slide, index, total, onLayout }) {
       <h1 style={{ fontSize:layout ? layout.size : region.max }}>
         {layout ? layout.lines.map((line, i) => <span key={i}>{line}{i < layout.lines.length - 1 && ' '}</span>) : slide.title.replace(/\s+/g, ' ')}
       </h1>
-      {slide.choices ? <div className="choice-list">{slide.choices.map(choice =>
-        <div className="choice-row" key={choice.name}>
-          <div className="choice-photo" data-image={choice.image} style={{backgroundImage:'url("' + choice.image + '")'}}/>
+      {slide.choices ? <div className="choice-list">{slide.choices.map((choice, choiceIndex) =>
+        <div className="choice-row" key={choiceIndex}>
+          <Photo src={choice.image} className={"choice-"+choiceIndex+" choice-photo"}/>
           <div><p>{choice.taste}</p><strong>{choice.name}</strong></div>
         </div>)}</div> : <p className="italic">{slide.italic}</p>}
     </div>
@@ -260,7 +264,41 @@ async function waitForImages(root) {
   }));
 }
 
+const DEFAULT_SLIDES = slides;
 function App() {
+  const [slides,setSlides]=useState(DEFAULT_SLIDES);
+  const [loaded,setLoaded]=useState(false);
+  const [saveStatus,setSaveStatus]=useState("Carregando rascunho…");
+  const [projectMessage,setProjectMessage]=useState("");
+  const [loadingFile,setLoadingFile]=useState(false);
+  const saveRevision=useRef(0);
+  const saveStarted=useRef(false);
+  useEffect(()=> {
+    readDraft().then(data=>{if(data)setSlides(validateProject(data,DEFAULT_SLIDES));setSaveStatus(data?"Rascunho recuperado neste navegador.":"Pronto para editar.");})
+      .catch(()=>setSaveStatus("Não foi possível recuperar o rascunho. Use Salvar projeto para guardar uma cópia."))
+      .finally(()=>setLoaded(true));
+  },[]);
+  useEffect(()=> {
+    if(!loaded)return;
+    if(!saveStarted.current){saveStarted.current=true;return;}
+    const revision=++saveRevision.current;
+    setSaveStatus("Salvando rascunho…");
+    const timer=setTimeout(()=>writeDraft(projectData(slides)).then(()=>{if(revision===saveRevision.current)setSaveStatus("Rascunho salvo neste navegador.");}).catch(()=>{if(revision===saveRevision.current)setSaveStatus("Não foi possível salvar no navegador. Baixe uma cópia em Salvar projeto.");}),600);
+    return ()=>clearTimeout(timer);
+  },[slides,loaded]);
+  function updateSlide(patch) {setReady(previous=>({...previous,[shownIndex]:undefined}));setSlides(previous=>previous.map((slide,i)=>i===shownIndex?{...slide,...patch}:slide));}
+  async function importProject(event) {
+    const file=event.target.files[0];event.target.value="";if(!file)return;
+    setLoadingFile(true);setProjectMessage("");
+    try {
+      if(file.size>80*1024*1024)throw new Error("O arquivo deve ter até 80 MB.");
+      const next=validateProject(JSON.parse(await file.text()),DEFAULT_SLIDES);
+      await Promise.all(next.flatMap(slide=>Object.values(slide.photos || {}).filter(p=>p.src).map(async p=>{const image=new Image();image.src=p.src;await image.decode();})));
+      saveFile(new Blob([JSON.stringify(projectData(slides))],{type:"application/json"}),"renata-marzano-backup.json");
+      setReady({});setSlides(next);setCurrent(0);setProjectMessage("Projeto carregado. Uma cópia do projeto anterior foi baixada.");
+    } catch(error) {setProjectMessage("Não foi possível carregar o projeto. "+(error.message || "Arquivo inválido."));}
+    finally {setLoadingFile(false);}
+  }
   const [mode, setMode] = useState('carousel');
   const [current, setCurrent] = useState(0);
   const [downloading, setDownloading] = useState(false);
@@ -310,6 +348,7 @@ function App() {
     } finally { setDownloading(false); }
   }
   return <div className="app-shell">
+    <fieldset className="app-controls" disabled={!loaded || downloading || loadingFile}>
     <aside className="panel">
       <div className="brand"><img src="logo-vertical-ouro.svg" alt="Renata Marzano"/></div>
       <div><p className="label">FORMATO</p><div className="segmented">
@@ -321,9 +360,12 @@ function App() {
         <button key={slide.label} className={shownIndex === i ? 'selected' : ''} onClick={() => {setMode('carousel'); setCurrent(i);}}>
           <b>{String(i + 1).padStart(2, '0')}</b><span>{slide.label}</span>
         </button>)}</div>
-      <p className="hint">Edite os textos em <code>main.jsx</code>. A composição preserva as margens e a hierarquia do carrossel.</p>
+      <p className="hint">Selecione um slide e edite os textos e as fotos no painel ao lado da prévia.</p>
     </aside>
     <section className="workspace">
+      <div className="project-tools"><button onClick={()=>saveFile(new Blob([JSON.stringify(projectData(slides))],{type:"application/json"}),"renata-marzano-projeto.json")}>Salvar projeto</button><label className="project-upload">Carregar projeto<input type="file" accept=".json,application/json" onChange={importProject}/></label></div>
+      <p className="save-status" role="status">{saveStatus} Os rascunhos ficam neste dispositivo; salve o projeto para levar a outro.</p>
+      {projectMessage && <p role="status">{projectMessage}</p>}
       <div className="workspace-top">
         <div><p className="label">TEMPLATE INSTAGRAM</p><h2>Itália fora do óbvio</h2></div>
         <div className="toolbar"><span className="format">1080 × 1350</span>
@@ -334,13 +376,15 @@ function App() {
       </div>
       {error && <p className="export-error" role="alert">{error}</p>}
       {Object.values(ready).some(value => value === false) && <p className="export-error" role="alert">Revise os textos antes de exportar: {slides.filter((_, i) => ready[i] === false).map(slide => slide.label).join(', ')}.</p>}
-      <div className="canvas-area">
+      <div className="editing-area"><div className="preview-column"><div className="canvas-area">
         <button className="nav prev" aria-label="Slide anterior" onClick={() => setCurrent(Math.max(0, current - 1))} disabled={shownIndex === 0}>←</button>
         <Preview slide={visible[shownIndex]} index={shownIndex} total={visible.length}/>
         <button className="nav next" aria-label="Próximo slide" onClick={() => setCurrent(Math.min(slides.length - 1, current + 1))} disabled={shownIndex === visible.length - 1}>→</button>
       </div>
       <div className="dots">{visible.map((_, i) => <button aria-label={'Slide ' + (i + 1)} aria-current={shownIndex === i ? 'true' : undefined} key={i} onClick={() => setCurrent(i)} className={shownIndex === i ? 'on' : ''}/>)}</div>
+      </div><Editor key={shownIndex} slide={slides[shownIndex]} index={shownIndex} onChange={updateSlide} onBusy={setLoadingFile} disabled={!loaded || downloading || loadingFile}/></div>
     </section>
+    </fieldset>
     <div className="export-pages" ref={exportRef} aria-hidden="true">{slides.map((slide, i) =>
       <Frame key={slide.label} slide={slide} index={i} total={mode === 'fixed' ? 1 : slides.length} onLayout={onLayout}/>)}</div>
   </div>;

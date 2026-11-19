@@ -12,7 +12,25 @@ Editor visual de carrosséis 4:5 (1080 × 1350), pronto para GitHub Pages. Ele f
 
 ## Como editar o carrossel
 
-Edite `main.jsx` para alterar os textos, a ordem, os títulos e as imagens de cada slide. As imagens e fontes do template ficam na raiz do repositório.
+Selecione um slide pelas setas ou pela lista. No painel **Editar slide**, altere título,
+texto de apoio e legendas. A prévia atualiza automaticamente e avisa se o texto não
+cabe na composição. As fontes, margens e modelos ficam protegidos.
+
+Em **Fotos e enquadramento**, escolha a foto do slide, envie um JPG, PNG ou WebP
+(até 20 MB) e ajuste posição horizontal, vertical e zoom. Cada foto das colagens
+é independente. **Restaurar foto original** também restaura seu enquadramento.
+Imagens importadas são convertidas localmente para JPEG, com lado máximo de 2400 px.
+
+O rascunho é salvo automaticamente no IndexedDB deste navegador após uma pausa de
+600 ms. Ele não sincroniza entre dispositivos; limpar os dados do site pode apagá-lo.
+**Salvar projeto** baixa um JSON com textos, fotos e enquadramentos. **Carregar projeto**
+aceita esse arquivo e baixa uma cópia do projeto anterior antes de substituí-lo.
+Se o navegador não permitir salvar, o status orienta a baixar o projeto.
+Nenhuma edição ou fotografia é enviada ao servidor ou altera o modelo público.
+
+`editor.jsx` reúne os controles, importação validada e persistência local; `main.jsx`
+mantém os dados originais, composição e exportação. O projeto continua sem build,
+servidor próprio ou novas dependências.
 
 O botão **Baixar carrossel** exporta todos os slides em PNG (1080 × 1350) dentro de um arquivo ZIP.
 
@@ -75,7 +93,7 @@ corte de palavras para esconder excesso de texto.
 A detecção de assunto principal das fotos **não é automática**. Revise a relação
 entre texto e fotografia ao trocar as imagens. As áreas de texto e os recortes das fotos são decisões editoriais por composição,
 não reconhecimento de imagem. Ao trocar conteúdo, revise também as colagens e
-legendas fora do bloco principal; a validação automática mede título e apoio.
+legendas fora do bloco principal. A validação automática mede título, apoio, resumo e limites dos rótulos e legendas.
 
 ### Exportação e verificação
 
