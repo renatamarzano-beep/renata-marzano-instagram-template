@@ -43,43 +43,92 @@ button:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
 .export-error{color:#8e291e;font-size:14px;line-height:1.5}
 .export-pages{position:absolute;left:-20000px;top:0;width:1080px;display:grid;gap:48px;pointer-events:none}
 
-/* Editorial master. Never override artwork dimensions or typography in media queries. */
-.post{
-  --safe:86px;--unit:12px;
-  position:relative;width:1080px;height:1350px;overflow:hidden;
-  background:var(--paper);isolation:isolate;
-}
-.post-image,.wash{position:absolute;inset:0;width:100%;height:100%}
-.post-image{background-size:cover;background-position:center;z-index:0}
-.wash{z-index:1;pointer-events:none}
-.cover .wash,.photo .wash{background:linear-gradient(180deg,rgba(43,34,25,.30),rgba(43,34,25,.03) 38%,rgba(43,34,25,.48) 100%)}
-.post header{z-index:2;position:absolute;top:86px;left:var(--safe);right:var(--safe);display:flex;justify-content:space-between;align-items:start;gap:24px}
-.eyebrow{font:400 24px/1.3 'DM Mono',monospace;letter-spacing:.1em;color:var(--orange-deep);padding-top:12px}
-.cover .eyebrow,.photo .eyebrow{color:#fff8ee}
-.mark{width:96px;height:96px;object-fit:contain;flex:none}
-.post-content{z-index:2;position:absolute;left:var(--safe);right:var(--safe)}
-.diamond{display:block;width:20px;height:20px;background:var(--orange);transform:rotate(45deg);margin:0 0 36px 4px}
+/* Six related compositions; all artwork coordinates remain fixed at 1080 × 1350. */
+.post{position:relative;width:1080px;height:1350px;overflow:hidden;background:var(--paper);isolation:isolate;color:var(--coffee)}
+.post figure{position:absolute;margin:0;z-index:0}
+.photo-fill{position:absolute;inset:0;background-size:cover;background-position:center}
+.post figcaption{position:absolute;bottom:0;left:0;right:0;padding:16px 18px;font:normal 400 27px/1.25 var(--support-font);color:var(--coffee);background:#fffdf8}
+.post header{z-index:3;position:absolute;top:86px;left:86px;right:86px;display:flex;justify-content:space-between;align-items:start;gap:24px}
+.eyebrow{font:400 24px/1.3 'DM Mono',monospace;letter-spacing:.12em;padding-top:12px}
+.mark{width:84px;height:84px;object-fit:contain;flex:none}
+.post-content{position:absolute;z-index:3}
 .post h1{font:400 112px/1.04 Advercase,serif;letter-spacing:-.025em;margin:0;width:100%;overflow-wrap:normal;hyphens:none}
 .post h1 span{display:block;white-space:nowrap}
-.cover h1,.photo h1{color:#fff8ee;text-shadow:0 2px 10px rgba(0,0,0,.2)}
-.italic{font:normal 400 48px/1.25 var(--support-font);color:var(--orange-deep);margin:36px 0 0;max-width:100%;overflow-wrap:break-word}
-.cover .italic,.photo .italic{color:#ffe7bd}
-.post footer{z-index:2;position:absolute;bottom:86px;left:var(--safe);right:var(--safe);display:flex;justify-content:space-between;align-items:start;gap:24px;font:24px/28px 'DM Mono',monospace;letter-spacing:.08em}
-.cover footer,.photo footer{color:#fff8ee}
-.photo .tape{z-index:2;position:absolute;top:324px;left:var(--safe);max-width:908px;background:var(--caramel);padding:12px 24px;color:var(--coffee);font:normal 400 48px/1.25 var(--support-font);transform:rotate(-3deg);transform-origin:left center}
-.note{background:var(--paper) url('papel-algodao.webp') center/cover}
-.note h1{color:var(--green)}
-.passport{position:absolute;right:86px;top:264px;width:168px;height:168px;border:4px solid var(--orange);border-radius:50%;color:var(--orange);transform:rotate(8deg);display:grid;place-content:center;text-align:center}
-.passport span{font:56px Advercase,serif}
-.passport small{font:16px 'DM Mono';letter-spacing:.1em}
-.sketch{position:absolute;bottom:216px;right:-72px;width:600px;border-top:4px dashed #b5844f;transform:rotate(-12deg)}
-.cta{background:var(--green)}
-.cta:after{content:'';position:absolute;left:-96px;bottom:-162px;width:810px;height:580px;background:url('panorama-lapis.jpg') left bottom/auto 100% no-repeat;opacity:.14;mix-blend-mode:multiply;z-index:0}
-.cta .eyebrow,.cta .italic{color:var(--caramel)}
-.cta h1,.cta footer{color:#fff8ee}
-.post-cta{display:inline-flex;align-items:center;gap:24px;margin-top:48px;background:var(--coffee);color:#fff8ee;padding:24px;font:24px/1.3 'DM Mono';letter-spacing:.05em}
-.post-cta span{display:inline-grid;place-content:center;width:48px;height:48px;background:var(--caramel);color:var(--coffee);font-size:32px}
-.layout-warning{position:absolute;inset:300px 86px auto;padding:36px;background:var(--paper-light);color:#8e291e;font:36px/1.4 var(--support-font);border:3px solid #8e291e;z-index:3}
+.italic{letter-spacing:.005em;word-spacing:.04em;font:normal 400 var(--support-size,44px)/1.3 var(--support-font);color:inherit;margin:var(--text-gap,36px) 0 0;max-width:var(--support-width,100%);overflow-wrap:break-word}
+.post footer{position:absolute;z-index:3;bottom:86px;left:86px;right:86px;display:flex;justify-content:space-between;gap:24px;font:22px/28px 'DM Mono',monospace;letter-spacing:.08em}
+.post footer:before{content:'';position:absolute;left:0;right:0;top:-24px;border-top:1px solid currentColor;opacity:.35}
+.layout-warning{position:absolute;inset:240px 86px auto;padding:36px;background:var(--paper-light);color:#8e291e;font:36px/1.4 var(--support-font);border:3px solid #8e291e;z-index:5}
+
+/* 01 — Landscape and a small photograph, like the opening of a travel journal. */
+.cover{background:#3e482c;color:#fff8ee}
+.cover-landscape{left:480px;top:0;width:600px;height:1350px}
+.cover-landscape .photo-fill{background-position:57% center}
+.cover-shade{position:absolute;inset:0;z-index:1;background:linear-gradient(90deg,#3e482c 0%,rgba(62,72,44,.97) 27%,rgba(62,72,44,.58) 57%,rgba(43,34,25,.14) 100%)}
+.cover header,.cover footer{color:var(--caramel)}
+.cover h1{text-shadow:0 2px 12px rgba(20,25,16,.12)}
+.cover .italic{color:#f1e4cc}
+.post .cover-postcard{z-index:2;left:732px;top:900px;width:246px;height:284px;background:#fffdf8;padding:12px;transform:rotate(7deg);box-shadow:0 12px 28px rgba(0,0,0,.18)}
+.cover-postcard .photo-fill{inset:12px 12px 66px;background-position:45% 65%}
+.cover-postcard figcaption{font-size:21px;padding:12px;text-align:center}
+.cover-detail{position:absolute;z-index:3;left:86px;top:1080px;width:580px;font:22px/1.5 'DM Mono',monospace;letter-spacing:.08em;color:var(--caramel)}
+.cover-detail span{display:block;margin-top:18px;font-size:19px;letter-spacing:.12em}
+
+/* 02 — Quiet cream column and a full-height food photograph. */
+.split{background:#f5f1e8}
+.split header{color:var(--green)}
+.post .split-photo{left:594px;top:228px;width:486px;height:946px}
+.split-photo .photo-fill{background-position:48% 60%}
+.split .post-content{color:var(--coffee)}
+.split .italic{color:#655543}
+.split-number{position:absolute;left:82px;top:1014px;color:#c8b899;font:144px/1 Advercase,serif}
+.photo-label{position:absolute;z-index:2;left:612px;top:1110px;padding:14px 18px;background:var(--paper-light);font:18px/1.3 'DM Mono',monospace;letter-spacing:.06em;color:var(--coffee)}
+
+/* 03 — Let the hands tell the story; text sits on an opaque paper panel. */
+.post .story-photo{inset:0}
+.story-photo .photo-fill{background-position:58% center}
+.story-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,34,25,.55),rgba(43,34,25,0) 37%,rgba(43,34,25,.18));z-index:1}
+.story header,.story footer{color:#fff8ee}
+.story-panel{position:absolute;z-index:2;left:86px;right:86px;top:744px;height:468px;background:#f5f1e8;box-shadow:0 12px 36px rgba(43,34,25,.12)}
+.story .post-content{color:var(--coffee)}
+.story .italic{color:#655543}
+.story-caption{position:absolute;z-index:2;left:86px;top:666px;background:var(--coffee);padding:14px 20px;color:#fff8ee;font:20px/1.3 'DM Mono',monospace;letter-spacing:.07em}
+.story footer:before{display:none}
+
+/* 04 — A larger print plus a close crop creates contrast without another font. */
+.collage{background:#f9f5ed}
+.collage header{color:var(--orange-deep)}
+.collage .post-content h1{color:var(--green)}
+.collage .italic{color:#655543}
+.post .collage-main{left:104px;top:708px;width:496px;height:468px;background:#fffdf8;transform:rotate(-5deg);box-shadow:0 12px 28px rgba(43,34,25,.14)}
+.collage-main .photo-fill{inset:14px 14px 62px;background-position:50% 68%}
+.collage-main figcaption{font-size:26px;text-align:center}
+.post .collage-detail{left:646px;top:864px;width:302px;height:284px;background:#fffdf8;transform:rotate(7deg);box-shadow:0 12px 28px rgba(43,34,25,.12)}
+.collage-detail .photo-fill{inset:12px 12px 60px;background-size:225%;background-position:56% 72%}
+.collage-detail figcaption{font-size:22px;text-align:center}
+.collage-word{position:absolute;left:634px;top:714px;color:var(--orange-deep);font:84px/1 Advercase,serif;letter-spacing:-.02em}
+
+/* 05 — Dark pause, with a wide crop above the conclusion. */
+.dessert{background:#36261c;color:#fff8ee}
+.dessert header,.dessert footer{color:var(--caramel)}
+.post .dessert-photo{left:86px;top:228px;width:908px;height:516px}
+.dessert-photo .photo-fill{background-position:50% 65%}
+.dessert-detail{position:absolute;left:110px;top:690px;z-index:2;padding:12px 16px;background:#36261c;color:var(--caramel);font:18px/1.2 'DM Mono',monospace;letter-spacing:.07em}
+.dessert .italic{color:#ecd6b6}
+
+/* 06 — Cream closing with three photographs and room for a real conversation. */
+.closing{background:#f5f1e8}
+.closing header{color:var(--orange-deep)}
+.closing h1{color:var(--green)}
+.closing .italic{color:#655543}
+.closing-rule{position:absolute;left:86px;right:86px;top:720px;display:flex;justify-content:space-between;align-items:center;border-top:1px solid #b8a88e;padding-top:18px;color:var(--orange-deep);font:20px/1.2 'DM Mono',monospace;letter-spacing:.1em}
+.closing-rule span:last-child{font-size:32px}
+.post .closing-photo{background:#fffdf8;box-shadow:0 10px 24px rgba(43,34,25,.14);width:272px;height:336px;top:840px}
+.closing-photo .photo-fill{inset:12px 12px 60px}
+.closing-photo figcaption{font-size:23px;text-align:center;padding:16px 8px}
+.closing-one{left:96px;transform:rotate(-6deg)}
+.post .closing-two{left:404px;top:816px;transform:rotate(3deg)}
+.closing-three{left:712px;transform:rotate(-3deg)}
+
 @media(max-width:760px){
   .app-shell{grid-template-columns:1fr}
   .panel{padding:20px;gap:15px}

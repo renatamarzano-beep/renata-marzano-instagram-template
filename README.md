@@ -31,23 +31,32 @@ do slide. As setas ficam abaixo da arte em telas pequenas.
 
 ### Grade e hierarquia
 
-- Margens laterais e superior/inferior: 86 px; largura útil: 908 px.
-- Unidade de espaçamento e alinhamento vertical: 12 px.
-- Títulos em Advercase: 88–112 px, entrelinha de 104%, tracking de −0,025 em.
-- Apoios em San Francisco do sistema Apple, com alternativas sem serifa: 48 px,
-  entrelinha de 125%, distância de 36 px do título.
-- Rodapé: 24 px, entrelinha de 28 px, a 86 px da borda inferior.
-- Conteúdo termina até y=1188, deixando ao menos 48 px antes do rodapé.
-- Capa começa preferencialmente em y=480; chamada final em y=444.
-  Blocos grandes podem subir, respeitando y=300.
-- Slides de fotografia ancoram o conteúdo acima da área segura do rodapé,
-  mantendo seu início a partir de y=480. Etiquetas ocupam a faixa em y=324.
+- Prancheta de 1080 × 1350 px, com margens-base de 86 px e largura útil de 908 px.
+- A fotografia e elementos de colagem podem sangrar; os blocos de leitura têm áreas próprias e medidas.
+- Títulos em Advercase, entrelinha de 104%, tracking de −0,025 em.
+- Apoios em San Francisco do sistema Apple, com alternativas sem serifa; entrelinha de 130%.
+- Rodapé a 86 px da base, em 22 px, mantendo a numeração comum à série.
+- `COMPOSITIONS`, em `main.jsx`, define posição, largura, limite inferior, faixa de título e tamanho do apoio para cada layout.
+
+| Composição | Título | Apoio | Distribuição |
+|---|---|---|---|
+| Capa / `cover` | 118–142 px | 44 px | Verde, paisagem à direita e uma fotografia menor com borda |
+| Bagna cauda / `split` | 88–104 px | 40 px | Coluna de texto creme à esquerda e fotografia à direita |
+| Agnolotti / `story` | 96–112 px | 40 px | Fotografia em página inteira e painel opaco para leitura |
+| Tajarin / `collage` | 112–136 px | 44 px | Título no alto, espaço livre e duas fotografias com recortes diferentes |
+| Bonet / `dessert` | 88–104 px | 40 px | Fundo café, fotografia horizontal e conclusão abaixo |
+| Encerramento / `closing` | 108–128 px | 44 px | Pergunta, convite à conversa e três fotografias |
+
+A direção se inspira na referência de carrossel enviada pelo usuário: alternância
+entre páginas claras e escuras, fotografias com bordas de papel, hierarquia serifada
+e composições variadas dentro da mesma identidade. Não utiliza a fonte manuscrita
+da referência: a tipografia de apoio continua em San Francisco.
 
 ### Como funciona o ajuste
 
 Após carregar as fontes, o código mede o texto com Canvas e a altura dos elementos
-no DOM. Testa títulos de 112 a 88 px, em passos de 2 px, com até quatro linhas.
-Uma pontuação combina tamanho, ocupação das linhas, quebras preferidas e finais
+no DOM. Testa a faixa de título de cada composição, em passos de 2 px, com até quatro linhas.
+Uma pontuação favorece títulos com presença e combina tamanho, ocupação das linhas, quebras preferidas e finais
 de linha com palavras de ligação. As quebras `\n` em `slides` são preferências,
 não travas que permitam cortar o texto.
 
@@ -57,8 +66,9 @@ um aviso e a exportação é bloqueada. Não há redução ilimitada, reticênci
 corte de palavras para esconder excesso de texto.
 
 A detecção de assunto principal das fotos **não é automática**. Revise a relação
-entre texto e fotografia ao trocar as imagens. As faixas verticais são decisões
-editoriais por tipo de slide, não reconhecimento de imagem.
+entre texto e fotografia ao trocar as imagens. As áreas de texto e os recortes das fotos são decisões editoriais por composição,
+não reconhecimento de imagem. Ao trocar conteúdo, revise também as colagens e
+legendas fora do bloco principal; a validação automática mede título e apoio.
 
 ### Exportação e verificação
 

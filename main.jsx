@@ -1,29 +1,50 @@
-const { useState, useRef, useEffect, useLayoutEffect } = React;
+const { useState, useRef, useLayoutEffect } = React;
 const { createRoot } = ReactDOM;
 
 // All composition measurements are in the 1080 × 1350 artwork coordinate space.
 const EDITORIAL = Object.freeze({
   width: 1080, height: 1350, margin: 86, grid: 12,
-  titleMin: 88, titleMax: 112, titleLeading: 1.04,
+  titleLeading: 1.04,
   contentBottom: 1188, footerGap: 48
 });
+// Layout regions belong to the artwork, never to the device viewport.
+const COMPOSITIONS = Object.freeze({
+  cover: { left:86, top:252, width:908, bottom:984, max:142, min:118, support:44, supportWidth:570, gap:36 },
+  split: { left:86, top:288, width:460, bottom:984, max:104, min:88, support:40, supportWidth:460, gap:36 },
+  story: { left:122, top:780, width:836, bottom:1188, max:112, min:96, support:40, supportWidth:800, gap:24 },
+  collage: { left:86, top:216, width:908, bottom:660, max:136, min:112, support:44, supportWidth:780, gap:36 },
+  dessert: { left:86, top:816, width:908, bottom:1188, max:104, min:88, support:40, supportWidth:880, gap:24 },
+  closing: { left:86, top:216, width:908, bottom:708, max:128, min:108, support:44, supportWidth:744, gap:36 }
+});
 const slides = [
-  { label: 'Capa', eyebrow: 'PIEMONTE · ITÁLIA', title: '5 sabores para\nentender o Piemonte', italic: 'e não, não é só Barolo.', image: 'turim-por-do-sol.jpg', type: 'cover' },
-  { label: 'Bagna cauda', eyebrow: '01 · ASTI E MONFERRATO', title: 'O ritual que\naquece a mesa.', italic: 'Legumes, alho e anchovas.', tape: 'bagna cauda', image: 'bagna-cauda.png', type: 'photo' },
-  { label: 'Agnolotti', eyebrow: '02 · LANGHE', title: 'O beliscão\nque vira massa.', italic: '“Plin” é o gesto de fechar.', tape: 'agnolotti del plin', image: 'agnolotti-plin.png', type: 'photo' },
-  { label: 'Tajarin', eyebrow: '03 · LANGHE', title: 'A massa mais\namarela daqui.', italic: 'Muitas gemas. Pouca pressa.', tape: 'tajarin', image: 'tajarin.png', type: 'photo' },
-  { label: 'Bonet', eyebrow: '04 · UM DOCE PIEMONTÊS', title: 'O final que\nfecha o almoço.', italic: 'Cacau, café e amaretti.', tape: 'bonet', image: 'bonet.png', type: 'photo' },
-  { label: 'Chamada final', eyebrow: 'VAMOS CONVERSAR?', title: 'Qual deles você\nprovaria primeiro?', italic: 'A gastronomia também faz parte do roteiro.', type: 'cta' },
+  { label:'Capa', eyebrow:'PIEMONTE, À MESA', title:'O Piemonte\ntambém se conhece\nà mesa.',
+    italic:'Se você gosta de pensar na viagem também pela comida, vem conhecer estes quatro sabores.',
+    image:'turim-por-do-sol.jpg', type:'cover', detail:'4 SABORES PARA A SUA VIAGEM' },
+  { label:'Bagna cauda', eyebrow:'01 / BAGNA CAUDA', title:'Vamos começar\npor aqui.',
+    italic:'Legumes, alho e anchovas se encontram na bagna cauda. Já dá vontade de sentar à mesa.',
+    image:'bagna-cauda.png', type:'split', detail:'ALHO, ANCHOVAS E LEGUMES' },
+  { label:'Agnolotti', eyebrow:'02 / AGNOLOTTI DEL PLIN', title:'Esse beliscão\ntem nome.',
+    italic:'Sabe o gesto de fechar a massa? É o plin, que dá nome ao agnolotti del plin.',
+    image:'agnolotti-plin.png', type:'story', detail:'O GESTO QUE DÁ NOME À MASSA' },
+  { label:'Tajarin', eyebrow:'03 / TAJARIN', title:'Reparou\nnessa cor?',
+    italic:'É a quantidade de gemas que deixa o tajarin tão amarelo. Dá vontade de provar, né?',
+    image:'tajarin.png', type:'collage', detail:'TAJARIN · PIEMONTE' },
+  { label:'Bonet', eyebrow:'04 / BONET', title:'E pra terminar,\num bonet.',
+    italic:'Se você deixou espaço pra sobremesa, aqui entram cacau, café e amaretti.',
+    image:'bonet.png', type:'dessert', detail:'A SOBREMESA TAMBÉM ENTRA NO ROTEIRO' },
+  { label:'Vamos conversar', eyebrow:'SUA PRÓXIMA VIAGEM', title:'Qual vai ser\na sua escolha?',
+    italic:'Me conta qual você quer provar primeiro. A gente pode começar a pensar na viagem por aí.',
+    type:'closing', detail:'BAGNA CAUDA / AGNOLOTTI / TAJARIN / BONET' }
 ];
 
 
 function titleCandidates(text, measure, width) {
-  const words = text.trim().split(/\s+/);
+  const words = text.trim().split(/[ \n\t]+/);
   if (words.length > 40) return [];
   const preferred = new Set();
   let count = 0;
   text.split('\n').slice(0, -1).forEach(line => {
-    count += line.trim().split(/\s+/).length;
+    count += line.trim().split(/[ \n\t]+/).length;
     preferred.add(count);
   });
   const candidates = [];
@@ -63,6 +84,7 @@ function Frame({ slide, index, total, onLayout }) {
   const articleRef = useRef(null);
   const [layout, setLayout] = useState(null);
   const [issue, setIssue] = useState('');
+  const region = COMPOSITIONS[slide.type];
   useLayoutEffect(() => {
     let cancelled = false;
     setLayout(null);
@@ -82,16 +104,15 @@ function Frame({ slide, index, total, onLayout }) {
       const context = canvas.getContext('2d');
       const width = block.clientWidth;
       const fixedHeight = block.offsetHeight - heading.offsetHeight;
-      const minTop = slide.type === 'photo' ? 480 : 300;
       const candidates = [];
-      for (let size = EDITORIAL.titleMax; size >= EDITORIAL.titleMin; size -= 2) {
+      for (let size = region.max; size >= region.min; size -= 2) {
         context.font = size + 'px Advercase';
         const measure = line => context.measureText(line).width - Math.max(0, line.length - 1) * size * 0.025;
         for (const candidate of titleCandidates(slide.title, measure, width - 8)) {
           const height = candidate.lines.length * size * EDITORIAL.titleLeading + fixedHeight;
-          if (height > EDITORIAL.contentBottom - minTop) continue;
+          if (height > region.bottom - region.top) continue;
           candidates.push({ ...candidate, size, height,
-            cost: candidate.cost + (EDITORIAL.titleMax - size) * 1.5 });
+            cost: candidate.cost + (region.max - size) * 3 });
         }
       }
       candidates.sort((a, b) => a.cost - b.cost);
@@ -102,10 +123,7 @@ function Frame({ slide, index, total, onLayout }) {
         onLayout?.(index, false);
         return;
       }
-      let top = slide.type === 'photo' ? EDITORIAL.contentBottom - best.height
-        : Math.min(slide.type === 'cta' ? 444 : 480, EDITORIAL.contentBottom - best.height);
-      top = Math.floor(top / EDITORIAL.grid) * EDITORIAL.grid;
-      if (!cancelled) setLayout({ size: best.size, lines: best.lines, top });
+      if (!cancelled) setLayout({ size: best.size, lines: best.lines, top: region.top });
     }
     compose().catch(() => {
       if (!cancelled) {
@@ -124,29 +142,60 @@ function Frame({ slide, index, total, onLayout }) {
     const block = article.querySelector('.post-content');
     const bottom = layout.top + block.offsetHeight;
     const valid = heading.scrollWidth <= heading.clientWidth + 1 &&
-      bottom <= EDITORIAL.contentBottom + 1 &&
+      bottom <= region.bottom + 1 &&
       [...heading.children].every(line => line.scrollWidth <= heading.clientWidth + 1);
     article.dataset.ready = valid ? 'true' : 'error';
     setIssue(valid ? '' : 'Revise o texto de “' + slide.label + '”: ele ultrapassa a área editorial.');
     onLayout?.(index, valid);
   }, [layout]);
 
+  function Photo({ src, className, caption }) {
+    return <figure className={className}>
+      <div className="photo-fill" data-image={src} style={{ backgroundImage:'url("' + src + '")' }}/>
+      {caption && <figcaption>{caption}</figcaption>}
+    </figure>;
+  }
   return <article ref={articleRef} className={'post ' + slide.type} data-ready="false">
-    {slide.image && <div className="post-image" data-image={slide.image} style={{ backgroundImage: 'url("' + slide.image + '")' }}/>}
-    <div className="wash"/>
+    {slide.type === 'cover' && <>
+      <Photo src={slide.image} className="cover-landscape"/>
+      <div className="cover-shade"/>
+      <Photo src="agnolotti-plin.png" className="cover-postcard" caption="Um gostinho da viagem."/>
+      <div className="cover-detail">{slide.detail}<span>CONTINUE POR AQUI →</span></div>
+    </>}
+    {slide.type === 'split' && <>
+      <Photo src={slide.image} className="split-photo"/>
+      <div className="split-number" aria-hidden="true">01</div>
+      <div className="photo-label">{slide.detail}</div>
+    </>}
+    {slide.type === 'story' && <>
+      <Photo src={slide.image} className="story-photo"/>
+      <div className="story-shade"/><div className="story-panel"/>
+      <div className="story-caption">{slide.detail}</div>
+    </>}
+    {slide.type === 'collage' && <>
+      <Photo src={slide.image} className="collage-main" caption="Olha esse amarelo."/>
+      <Photo src={slide.image} className="collage-detail" caption="Tajarin, de perto."/>
+      <span className="collage-word" aria-hidden="true">a tavola.</span>
+    </>}
+    {slide.type === 'dessert' && <>
+      <Photo src={slide.image} className="dessert-photo"/>
+      <div className="dessert-detail">{slide.detail}</div>
+    </>}
+    {slide.type === 'closing' && <>
+      <Photo src="bagna-cauda.png" className="closing-photo closing-one" caption="Pra começar."/>
+      <Photo src="tajarin.png" className="closing-photo closing-two" caption="Mais um prato?"/>
+      <Photo src="bonet.png" className="closing-photo closing-three" caption="E a sobremesa."/>
+      <div className="closing-rule"><span>VAMOS CONVERSAR</span><span>↗</span></div>
+    </>}
     <header><span className="eyebrow">{slide.eyebrow}</span><Mark/></header>
-    {slide.type === 'note' && <div className="passport"><span>RM</span><small>FEITO À MÃO</small></div>}
-    <div className="post-content" style={{ top: layout ? layout.top : 480 }}>
-      <span className="diamond" aria-hidden="true"/>
-      <h1 style={{ fontSize: layout ? layout.size : EDITORIAL.titleMax }}>
+    <div className="post-content" style={{ top:region.top, left:region.left, width:region.width,
+      '--support-size':region.support + 'px', '--support-width':region.supportWidth + 'px', '--text-gap':region.gap + 'px' }}>
+      <h1 style={{ fontSize:layout ? layout.size : region.max }}>
         {layout ? layout.lines.map((line, i) => <span key={i}>{line}{i < layout.lines.length - 1 && ' '}</span>) : slide.title.replace(/\s+/g, ' ')}
       </h1>
       <p className="italic">{slide.italic}</p>
-      {slide.type === 'cta' && <div className="post-cta">QUERO MEU ROTEIRO <span>→</span></div>}
     </div>
-    {slide.type === 'photo' && <div className="tape">{slide.tape}</div>}
     <footer><span>RENATA MARZANO</span><span>{String(index + 1).padStart(2, '0')} — {String(total).padStart(2, '0')}</span></footer>
-    {slide.type === 'note' && <div className="sketch"/>}
     {issue && <div className="layout-warning" role="alert">{issue}</div>}
   </article>;
 }
