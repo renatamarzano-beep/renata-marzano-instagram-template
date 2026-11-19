@@ -2,15 +2,15 @@ const { useState, useRef } = React;
 const { createRoot } = ReactDOM;
 
 const slides = [
-  { label: 'Capa', eyebrow: 'PIEMONTE · ITÁLIA', title: '5 sabores para\nentender o Piemonte', italic: 'e não, não é só Barolo.', image: '/images/turim-por-do-sol.jpg', type: 'cover' },
-  { label: 'Bagna cauda', eyebrow: '01 · ASTI E MONFERRATO', title: 'O ritual que\naquece a mesa.', italic: 'Legumes, alho e anchovas.', tape: 'bagna cauda', image: '/images/bagna-cauda.png', type: 'photo' },
-  { label: 'Agnolotti', eyebrow: '02 · LANGHE', title: 'O beliscão\nque vira massa.', italic: '“Plin” é o gesto de fechar.', tape: 'agnolotti del plin', image: '/images/agnolotti-plin.png', type: 'photo' },
-  { label: 'Tajarin', eyebrow: '03 · LANGHE', title: 'A massa mais\namarela daqui.', italic: 'Muitas gemas. Pouca pressa.', tape: 'tajarin', image: '/images/tajarin.png', type: 'photo' },
-  { label: 'Bonet', eyebrow: '04 · UM DOCE PIEMONTÊS', title: 'O final que\nfecha o almoço.', italic: 'Cacau, café e amaretti.', tape: 'bonet', image: '/images/bonet.png', type: 'photo' },
+  { label: 'Capa', eyebrow: 'PIEMONTE · ITÁLIA', title: '5 sabores para\nentender o Piemonte', italic: 'e não, não é só Barolo.', image: '/turim-por-do-sol.jpg', type: 'cover' },
+  { label: 'Bagna cauda', eyebrow: '01 · ASTI E MONFERRATO', title: 'O ritual que\naquece a mesa.', italic: 'Legumes, alho e anchovas.', tape: 'bagna cauda', image: '/bagna-cauda.png', type: 'photo' },
+  { label: 'Agnolotti', eyebrow: '02 · LANGHE', title: 'O beliscão\nque vira massa.', italic: '“Plin” é o gesto de fechar.', tape: 'agnolotti del plin', image: '/agnolotti-plin.png', type: 'photo' },
+  { label: 'Tajarin', eyebrow: '03 · LANGHE', title: 'A massa mais\namarela daqui.', italic: 'Muitas gemas. Pouca pressa.', tape: 'tajarin', image: '/tajarin.png', type: 'photo' },
+  { label: 'Bonet', eyebrow: '04 · UM DOCE PIEMONTÊS', title: 'O final que\nfecha o almoço.', italic: 'Cacau, café e amaretti.', tape: 'bonet', image: '/bonet.png', type: 'photo' },
   { label: 'Chamada final', eyebrow: 'VAMOS CONVERSAR?', title: 'Qual deles você\nprovaria primeiro?', italic: 'A gastronomia também faz parte do roteiro.', type: 'cta' },
 ];
 
-function Mark(){ return <img className="mark" src="/images/monograma-ouro.svg" alt="Monograma Renata Marzano"/> }
+function Mark(){ return <img className="mark" src="/monograma-ouro.svg" alt="Monograma Renata Marzano"/> }
 function Frame({slide,index,total}){
   const plainTitle = slide.title.split('\n').map((line,i)=><span key={i}>{line}{i === 0 && <br/>}</span>);
   return <article className={`post ${slide.type}`}>
@@ -58,11 +58,11 @@ function App(){
   }
   return <div className="app-shell">
     <aside className="panel">
-      <div className="brand"><img src="/images/logo-vertical-ouro.svg" alt="Renata Marzano"/></div>
+      <div className="brand"><img src="/logo-vertical-ouro.svg" alt="Renata Marzano"/></div>
       <div><p className="label">FORMATO</p><div className="segmented"><button className={mode==='fixed'?'active':''} onClick={()=>{setMode('fixed');setCurrent(0)}}>Post fixo</button><button className={mode==='carousel'?'active':''} onClick={()=>setMode('carousel')}>Carrossel</button></div></div>
       <div className="divider"/>
       <div className="template-list"><p className="label">ESTRUTURA</p>{slides.map((s,i)=><button key={s.eyebrow} className={shownIndex===i?'selected':''} onClick={()=>{setMode('carousel');setCurrent(i)}}><b>{String(i+1).padStart(2,'0')}</b><span>{s.label}</span></button>)}</div>
-      <p className="hint">Edite os textos em <code>src/main.jsx</code>. O arquivo já nasce em 4:5, ideal para o feed.</p>
+      <p className="hint">Edite os textos em <code>main.jsx</code>. O arquivo já nasce em 4:5, ideal para o feed.</p>
     </aside>
     <section className="workspace">
       <div className="workspace-top"><div><p className="label">TEMPLATE INSTAGRAM</p><h2>Itália fora do óbvio</h2></div><div className="toolbar"><span className="format">1080 × 1350</span><button className="download" onClick={downloadAll} disabled={downloading}>{downloading ? 'PREPARANDO…' : '↓ BAIXAR CARROSSEL'}</button></div></div>
