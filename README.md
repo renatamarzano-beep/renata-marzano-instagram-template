@@ -45,12 +45,19 @@ do slide. As setas ficam abaixo da arte em telas pequenas.
 | Agnolotti / `story` | 96–112 px | 40 px | Fotografia em página inteira e painel opaco para leitura |
 | Tajarin / `collage` | 112–136 px | 44 px | Título no alto, espaço livre e duas fotografias com recortes diferentes |
 | Bonet / `dessert` | 88–104 px | 40 px | Fundo café, fotografia horizontal e conclusão abaixo |
+| Detalhe / `detail` | 88–108 px | 42 px | Fundo verde, explicação no alto e fotografia horizontal abaixo |
+| Resumo / `summary` | 88–104 px | 34 px | Quatro escolhas com miniaturas e nomes em 52 px |
 | Encerramento / `closing` | 108–128 px | 44 px | Pergunta, convite à conversa e três fotografias |
 
 A direção se inspira na referência de carrossel enviada pelo usuário: alternância
 entre páginas claras e escuras, fotografias com bordas de papel, hierarquia serifada
 e composições variadas dentro da mesma identidade. Não utiliza a fonte manuscrita
 da referência: a tipografia de apoio continua em San Francisco.
+
+A sequência atual tem dez slides: capa, bagna cauda, modo de comer, agnolotti,
+beliscão, tajarin, gemas, bonet, resumo das escolhas e convite à conversa.
+Os ajustes `region` de cada slide refinam as medidas-base: colagens usam títulos
+de 88–104 px e apoio de 40 px; a capa usa 104–128 px e o encerramento 88–112 px.
 
 ### Como funciona o ajuste
 
@@ -74,7 +81,7 @@ legendas fora do bloco principal; a validação automática mede título e apoio
 
 - PNGs de 1080 × 1350, escala 1, aguardando fontes e imagens.
 - Fotografias usam fundo com recorte `cover`, compartilhado pela prévia e pelo PNG.
-- Post fixo exporta somente a capa; carrossel exporta as seis páginas.
+- Post fixo exporta somente a capa; carrossel exporta as dez páginas.
 - Erros de carregamento/exportação aparecem na interface.
 - Ao publicar CSS ou JSX, atualize seus parâmetros de versão no HTML para evitar cache.
 
@@ -134,3 +141,9 @@ O texto mantém informação concreta e continua confortável de ler no slide?
 
 Esta é uma regra de criação e revisão editorial. O aplicativo verifica o espaço
 ocupado pelo texto, mas não avalia automaticamente o tom de voz.
+
+## Referências do conteúdo gastronômico
+
+- [Bagna cauda — El Comidista](https://elpais.com/gastronomia/el-comidista/2024-11-25/bagna-cauda-una-receta-del-piamonte-perfecta-para-compartir.html)
+- [Produtos e pratos do Piemonte — Italia.it](https://www.italia.it/it/piemonte/cosa-fare/prodotti-piatti-tipici-piemonte)
+- [Turim — Italia.it](https://www.italia.it/it/piemonte/torino/guida-storia-curiosita)

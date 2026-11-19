@@ -88,10 +88,10 @@ button:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
 .story-photo .photo-fill{background-position:58% center}
 .story-shade{position:absolute;inset:0;background:linear-gradient(180deg,rgba(43,34,25,.55),rgba(43,34,25,0) 37%,rgba(43,34,25,.18));z-index:1}
 .story header,.story footer{color:#fff8ee}
-.story-panel{position:absolute;z-index:2;left:86px;right:86px;top:744px;height:468px;background:#f5f1e8;box-shadow:0 12px 36px rgba(43,34,25,.12)}
+.story-panel{position:absolute;z-index:2;left:86px;right:86px;top:660px;height:552px;background:#f5f1e8;box-shadow:0 12px 36px rgba(43,34,25,.12)}
 .story .post-content{color:var(--coffee)}
 .story .italic{color:#655543}
-.story-caption{position:absolute;z-index:2;left:86px;top:666px;background:var(--coffee);padding:14px 20px;color:#fff8ee;font:20px/1.3 'DM Mono',monospace;letter-spacing:.07em}
+.story-caption{position:absolute;z-index:2;left:86px;top:588px;background:var(--coffee);padding:14px 20px;color:#fff8ee;font:20px/1.3 'DM Mono',monospace;letter-spacing:.07em}
 .story footer:before{display:none}
 
 /* 04 — A larger print plus a close crop creates contrast without another font. */
@@ -146,3 +146,21 @@ button:focus-visible{outline:2px solid var(--orange);outline-offset:4px}
   .download{padding:9px;font-size:9px}
   .format{display:none}
 }
+
+/* Ten-slide sequence: complementary detail pages and a practical choice guide. */
+.compact-collage .collage-main{top:804px;height:372px;width:496px}
+.compact-collage .collage-detail{top:924px;height:224px;width:302px}
+.compact-collage .collage-word{top:792px;font-size:76px}
+.detail{background:var(--green);color:#fff8ee}
+.detail header,.detail footer{color:var(--caramel)}
+.detail .italic{color:#f1e4cc}
+.post .detail-photo{left:86px;top:720px;width:908px;height:456px}
+.detail-photo .photo-fill{background-position:50% 70%}
+.summary{background:var(--paper-light)}
+.summary header{color:var(--orange-deep)}
+.summary h1{color:var(--green)}
+.choice-list{display:grid;gap:16px;margin-top:36px}
+.choice-row{display:flex;align-items:center;gap:28px;min-height:144px;border-top:1px solid #d6c9b6;padding-top:12px}
+.choice-photo{width:120px;height:120px;flex:none;background-position:center;background-size:cover}
+.choice-row p{font:400 34px/1.25 var(--support-font);color:#655543;margin:0 0 8px}
+.choice-row strong{font:400 52px/1.04 Advercase,serif;letter-spacing:-.015em;color:var(--coffee)}

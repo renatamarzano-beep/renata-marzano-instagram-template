@@ -14,27 +14,47 @@ const COMPOSITIONS = Object.freeze({
   story: { left:122, top:780, width:836, bottom:1188, max:112, min:96, support:40, supportWidth:800, gap:24 },
   collage: { left:86, top:216, width:908, bottom:660, max:136, min:112, support:44, supportWidth:780, gap:36 },
   dessert: { left:86, top:816, width:908, bottom:1188, max:104, min:88, support:40, supportWidth:880, gap:24 },
+  detail: { left:86, top:216, width:908, bottom:660, max:108, min:88, support:42, supportWidth:860, gap:24 },
+  summary: { left:86, top:216, width:908, bottom:1188, max:104, min:88, support:40, supportWidth:908, gap:36 },
   closing: { left:86, top:216, width:908, bottom:708, max:128, min:108, support:44, supportWidth:744, gap:36 }
 });
 const slides = [
-  { label:'Capa', eyebrow:'PIEMONTE, À MESA', title:'O Piemonte\ntambém se conhece\nà mesa.',
-    italic:'Se você gosta de pensar na viagem também pela comida, vem conhecer estes quatro sabores.',
-    image:'turim-por-do-sol.jpg', type:'cover', detail:'4 SABORES PARA A SUA VIAGEM' },
-  { label:'Bagna cauda', eyebrow:'01 / BAGNA CAUDA', title:'Vamos começar\npor aqui.',
-    italic:'Legumes, alho e anchovas se encontram na bagna cauda. Já dá vontade de sentar à mesa.',
-    image:'bagna-cauda.png', type:'split', detail:'ALHO, ANCHOVAS E LEGUMES' },
-  { label:'Agnolotti', eyebrow:'02 / AGNOLOTTI DEL PLIN', title:'Esse beliscão\ntem nome.',
-    italic:'Sabe o gesto de fechar a massa? É o plin, que dá nome ao agnolotti del plin.',
-    image:'agnolotti-plin.png', type:'story', detail:'O GESTO QUE DÁ NOME À MASSA' },
-  { label:'Tajarin', eyebrow:'03 / TAJARIN', title:'Reparou\nnessa cor?',
-    italic:'É a quantidade de gemas que deixa o tajarin tão amarelo. Dá vontade de provar, né?',
-    image:'tajarin.png', type:'collage', detail:'TAJARIN · PIEMONTE' },
-  { label:'Bonet', eyebrow:'04 / BONET', title:'E pra terminar,\num bonet.',
-    italic:'Se você deixou espaço pra sobremesa, aqui entram cacau, café e amaretti.',
-    image:'bonet.png', type:'dessert', detail:'A SOBREMESA TAMBÉM ENTRA NO ROTEIRO' },
-  { label:'Vamos conversar', eyebrow:'SUA PRÓXIMA VIAGEM', title:'Qual vai ser\na sua escolha?',
-    italic:'Me conta qual você quer provar primeiro. A gente pode começar a pensar na viagem por aí.',
-    type:'closing', detail:'BAGNA CAUDA / AGNOLOTTI / TAJARIN / BONET' }
+  { label:'Capa', eyebrow:'PIEMONTE, À MESA', title:'Vai ao Piemonte?\nSaiba o que pedir à mesa.',
+    italic:'Separei quatro sabores pra você reconhecer no cardápio — e começar a imaginar o que vai provar.',
+    image:'turim-por-do-sol.jpg', type:'cover', detail:'4 SABORES PARA A SUA VIAGEM', region:{max:128,min:104} },
+  { label:'Bagna cauda', eyebrow:'01 / BAGNA CAUDA', title:'Comece pela\nbagna cauda.',
+    italic:'É um molho quente de alho, anchovas e azeite, servido com legumes. Se você gosta desses ingredientes, já tem um nome pra guardar.',
+    image:'bagna-cauda.png', type:'split', detail:'ALHO, ANCHOVAS E AZEITE', region:{top:228,max:100} },
+  { label:'Como comer', eyebrow:'BAGNA CAUDA / À MESA', title:'Os legumes vão\ndireto no molho.',
+    italic:'Você mergulha cada pedaço na bagna cauda antes de comer. Agora dá pra entender melhor o prato quando ele chegar à mesa.',
+    image:'bagna-cauda.png', type:'story', detail:'UM MOLHO QUENTE PARA OS LEGUMES', region:{top:696} },
+  { label:'Agnolotti del plin', eyebrow:'02 / AGNOLOTTI DEL PLIN', title:'Depois, procure os\nagnolotti del plin.',
+    italic:'São pequenas massas recheadas. Mas tem um detalhe no jeito de fechar cada uma que vale observar.',
+    image:'agnolotti-plin.png', type:'collage', variant:'compact-collage', caption:'Agnolotti del plin.', detailCaption:'Olha o fechamento.', accent:'plin.',
+    region:{max:104,min:88,bottom:744,support:40,supportWidth:908,gap:24} },
+  { label:'O beliscão', eyebrow:'AGNOLOTTI / O DETALHE', title:'“Plin” quer dizer\nbeliscão.',
+    italic:'É o gesto que une as bordas da massa. O nome do prato conta como ele é feito — e você já sabe onde reparar.',
+    image:'agnolotti-plin.png', type:'story', detail:'O GESTO QUE DÁ NOME À MASSA', region:{top:696} },
+  { label:'Tajarin', eyebrow:'03 / TAJARIN', title:'Prefere uma massa em fios?\nConheça o tajarin.',
+    italic:'Ele é fininho e tem um amarelo que chama a atenção. Essa cor tem uma explicação na própria receita.',
+    image:'tajarin.png', type:'collage', variant:'compact-collage', caption:'Tajarin, no prato.', detailCaption:'De perto.', accent:'a tavola.',
+    region:{max:104,min:88,bottom:744,support:40,supportWidth:908,gap:24} },
+  { label:'A cor das gemas', eyebrow:'TAJARIN / A COR', title:'O amarelo vem\ndas gemas.',
+    italic:'A quantidade de gemas dá ao tajarin sua cor característica. Então, quando encontrar esse nome no cardápio, já consegue imaginar o prato.',
+    image:'tajarin.png', type:'detail' },
+  { label:'Bonet', eyebrow:'04 / BONET', title:'Pra sobremesa,\nguarde o nome bonet.',
+    italic:'É um doce parecido com um pudim, com cacau e amaretti, aqueles biscoitos de amêndoa. Se essa combinação te agrada, vale deixar espaço.',
+    image:'bonet.png', type:'dessert', detail:'CACAU E AMARETTI', region:{top:780} },
+  { label:'Sua escolha', eyebrow:'QUATRO SABORES / SEU CARDÁPIO', title:'Na hora de escolher,\npense no que\nvocê gosta.',
+    type:'summary', choices:[
+      { taste:'Alho e anchovas?', name:'Bagna cauda.', image:'bagna-cauda.png' },
+      { taste:'Massa recheada?', name:'Agnolotti del plin.', image:'agnolotti-plin.png' },
+      { taste:'Massa fininha com gemas?', name:'Tajarin.', image:'tajarin.png' },
+      { taste:'Cacau e amaretti?', name:'Bonet.', image:'bonet.png' }
+    ] },
+  { label:'Vamos conversar', eyebrow:'SUA PRÓXIMA VIAGEM', title:'Qual desses quatro\nvocê pediria primeiro?',
+    italic:'Me conta o nome. Quero saber por onde começaria a sua viagem à mesa.',
+    type:'closing', region:{max:112,min:88} }
 ];
 
 
@@ -84,7 +104,7 @@ function Frame({ slide, index, total, onLayout }) {
   const articleRef = useRef(null);
   const [layout, setLayout] = useState(null);
   const [issue, setIssue] = useState('');
-  const region = COMPOSITIONS[slide.type];
+  const region = { ...COMPOSITIONS[slide.type], ...slide.region };
   useLayoutEffect(() => {
     let cancelled = false;
     setLayout(null);
@@ -155,7 +175,7 @@ function Frame({ slide, index, total, onLayout }) {
       {caption && <figcaption>{caption}</figcaption>}
     </figure>;
   }
-  return <article ref={articleRef} className={'post ' + slide.type} data-ready="false">
+  return <article ref={articleRef} className={'post ' + slide.type + (slide.variant ? ' ' + slide.variant : '')} data-ready="false">
     {slide.type === 'cover' && <>
       <Photo src={slide.image} className="cover-landscape"/>
       <div className="cover-shade"/>
@@ -173,10 +193,11 @@ function Frame({ slide, index, total, onLayout }) {
       <div className="story-caption">{slide.detail}</div>
     </>}
     {slide.type === 'collage' && <>
-      <Photo src={slide.image} className="collage-main" caption="Olha esse amarelo."/>
-      <Photo src={slide.image} className="collage-detail" caption="Tajarin, de perto."/>
-      <span className="collage-word" aria-hidden="true">a tavola.</span>
+      <Photo src={slide.image} className="collage-main" caption={slide.caption}/>
+      <Photo src={slide.image} className="collage-detail" caption={slide.detailCaption}/>
+      <span className="collage-word" aria-hidden="true">{slide.accent}</span>
     </>}
+    {slide.type === 'detail' && <Photo src={slide.image} className="detail-photo"/>}
     {slide.type === 'dessert' && <>
       <Photo src={slide.image} className="dessert-photo"/>
       <div className="dessert-detail">{slide.detail}</div>
@@ -193,7 +214,11 @@ function Frame({ slide, index, total, onLayout }) {
       <h1 style={{ fontSize:layout ? layout.size : region.max }}>
         {layout ? layout.lines.map((line, i) => <span key={i}>{line}{i < layout.lines.length - 1 && ' '}</span>) : slide.title.replace(/\s+/g, ' ')}
       </h1>
-      <p className="italic">{slide.italic}</p>
+      {slide.choices ? <div className="choice-list">{slide.choices.map(choice =>
+        <div className="choice-row" key={choice.name}>
+          <div className="choice-photo" data-image={choice.image} style={{backgroundImage:'url("' + choice.image + '")'}}/>
+          <div><p>{choice.taste}</p><strong>{choice.name}</strong></div>
+        </div>)}</div> : <p className="italic">{slide.italic}</p>}
     </div>
     <footer><span>RENATA MARZANO</span><span>{String(index + 1).padStart(2, '0')} — {String(total).padStart(2, '0')}</span></footer>
     {issue && <div className="layout-warning" role="alert">{issue}</div>}
