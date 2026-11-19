@@ -71,3 +71,56 @@ editoriais por tipo de slide, não reconhecimento de imagem.
 Antes de aprovar novos textos, confira margens, quebras, contraste e rodapé na
 prévia e em um PNG exportado. O sistema limita falhas geométricas; a revisão
 editorial continua necessária para sentido, contraste e relação com a imagem.
+
+## Voz e elaboração dos textos
+
+Escreva como quem conversa com uma pessoa: português brasileiro natural, próximo
+e fluido, com clareza e conhecimento do assunto. O leitor deve sentir que alguém
+está lhe contando algo interessante, sem precisar decifrar uma frase de campanha.
+
+### Regras de escrita
+
+- Dirija-se a uma pessoa, usando “você” quando fizer sentido, sem repetir em toda frase.
+- Prefira palavras familiares, verbos concretos e ordem direta.
+- Conecte as ideias: cada frase deve continuar a anterior, e cada slide deve ajudar
+  a conversa a avançar. Evite coleções de frases de efeito sem ligação.
+- Varie o comprimento das frases para criar ritmo. Ser breve não significa cortar
+  conectivos, eliminar verbos ou transformar tudo em fragmentos.
+- Use “a gente” e “pra” quando soarem naturais à voz da marca, sem impor gírias,
+  intimidade artificial ou informalidade em excesso.
+- Explique termos locais ou técnicos no fluxo da conversa, sem soar como verbete.
+- Prefira detalhes observáveis a adjetivos genéricos. Evite clichês como “experiência
+  inesquecível”, “mergulhe nessa jornada” e “sabores que encantam”.
+- Evite fórmulas repetitivas, perguntas retóricas em série e slogans como
+  “Muitas gemas. Pouca pressa.” quando uma frase conectada comunica melhor.
+- Faça convites e perguntas que tenham relação com o conteúdo, sem pressão de venda.
+- Preserve a exatidão: o tom pessoal não autoriza inventar vivências da Renata,
+  depoimentos, recomendações pessoais ou fatos.
+
+### Aplicação ao carrossel
+
+O título abre a conversa e o apoio acrescenta informação, em vez de repetir o título.
+A sequência deve ter continuidade e cumprir o que a capa promete, inclusive em
+listas e quantidades. Na conclusão, retome o assunto com uma pergunta ou um convite
+que a pessoa consiga responder.
+
+Escreva primeiro a ideia completa. Depois corte redundâncias para caber na grade,
+preservando sentido e ritmo. Se não couber com boa leitura, reescreva ou distribua
+o conteúdo entre slides; não sacrifique a voz para encaixar uma frase.
+
+### Exemplos de direção de voz
+
+Os exemplos abaixo ilustram o tom; não são substituições automáticas dos slides.
+
+| Formulação fragmentada ou formal | Formulação mais falada |
+|---|---|
+| “Muitas gemas. Pouca pressa.” | “É a quantidade de gemas que dá essa cor ao tajarin.” |
+| “Plin é o gesto de fechar.” | “Sabe o beliscão que fecha a massa? É daí que vem o nome plin.” |
+| “A gastronomia também faz parte do roteiro.” | “Na hora de pensar na viagem, vale escolher também o que você quer provar.” |
+
+Antes de aprovar, leia o conjunto em voz alta: eu diria isso assim para alguém?
+As ideias se conectam? Há alguma frase que parece escrita só para impressionar?
+O texto mantém informação concreta e continua confortável de ler no slide?
+
+Esta é uma regra de criação e revisão editorial. O aplicativo verifica o espaço
+ocupado pelo texto, mas não avalia automaticamente o tom de voz.
